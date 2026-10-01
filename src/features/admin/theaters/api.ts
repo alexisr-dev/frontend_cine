@@ -1,9 +1,10 @@
 import { api } from '@/lib/axios'
+import { resultadosDe } from '@/lib/paginado'
 import type { Cine, CineAdminInput, Paginado, Sala, SalaAdminInput } from '@/types'
 
 export const listarCinesAdmin = async () => {
-  const { data } = await api.get<Cine[]>('/admin/cinemas')
-  return data
+  const { data } = await api.get<Cine[] | Paginado<Cine>>('/admin/cinemas')
+  return resultadosDe(data)
 }
 
 export const obtenerCineAdmin = async (id: number) => {

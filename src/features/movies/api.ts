@@ -1,4 +1,5 @@
 import { api } from '@/lib/axios'
+import { resultadosDe } from '@/lib/paginado'
 import type { Genero, Paginado, Pelicula, PeliculaDetalle } from '@/types'
 
 export interface FiltrosCatalogo {
@@ -20,6 +21,6 @@ export const obtenerPelicula = async (id: number) => {
 }
 
 export const listarGeneros = async () => {
-  const { data } = await api.get<Genero[]>('/genres')
-  return data
+  const { data } = await api.get<Genero[] | Paginado<Genero>>('/genres')
+  return resultadosDe(data)
 }

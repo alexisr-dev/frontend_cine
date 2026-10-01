@@ -1,5 +1,6 @@
 import { api } from '@/lib/axios'
-import type { Cine, Funcion, FuncionDetalle } from '@/types'
+import { resultadosDe } from '@/lib/paginado'
+import type { Cine, Funcion, FuncionDetalle, Paginado } from '@/types'
 
 export interface FiltrosFunciones {
   fecha?: string
@@ -9,8 +10,10 @@ export interface FiltrosFunciones {
 }
 
 export const funcionesDePelicula = async (peliculaId: number, filtros: FiltrosFunciones = {}) => {
-  const { data } = await api.get<Funcion[]>(`/movies/${peliculaId}/showtimes`, { params: filtros })
-  return data
+  const { data } = await api.get<Funcion[] | Paginado<Funcion>>(`/movies/${peliculaId}/showtimes`, {
+    params: filtros,
+  })
+  return resultadosDe(data)
 }
 
 export const fechasDePelicula = async (peliculaId: number) => {
@@ -19,8 +22,8 @@ export const fechasDePelicula = async (peliculaId: number) => {
 }
 
 export const listarFunciones = async (filtros: FiltrosFunciones = {}) => {
-  const { data } = await api.get<Funcion[]>('/showtimes', { params: filtros })
-  return data
+  const { data } = await api.get<Funcion[] | Paginado<Funcion>>('/showtimes', { params: filtros })
+  return resultadosDe(data)
 }
 
 export const obtenerFuncion = async (id: number) => {
@@ -29,6 +32,6 @@ export const obtenerFuncion = async (id: number) => {
 }
 
 export const listarCines = async () => {
-  const { data } = await api.get<Cine[]>('/cinemas')
-  return data
+  const { data } = await api.get<Cine[] | Paginado<Cine>>('/cinemas')
+  return resultadosDe(data)
 }
